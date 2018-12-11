@@ -1,9 +1,10 @@
 # google-apps-script-dts
 
-Generates @types/google-apps-script.
+Generates TypeScript definitions for [`@types/google-apps-script`](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/google-apps-script).
 
 ```sh
-
+npm run build;
+npm run generate;
 ```
 
 ## Create a PR to DefinitelyTyped
