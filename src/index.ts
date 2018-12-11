@@ -1,6 +1,8 @@
-const util = require('util');
-const mkdirp = require('mkdirp');
-const mkdirpPromise = util.promisify(mkdirp);
+import createAdvancedServiceDTs from './createAdvancedServiceDTs';
+import genDevGoogleDT from './genDevGoogleDT';
+import getDiscoveryDocs from './getDiscoveryDocs';
+import setup from './setup';
+import spiderDevGoogle from './spiderDevGoogle';
 
 // Plan
 // 1. Make dir
@@ -12,12 +14,9 @@ const mkdirpPromise = util.promisify(mkdirp);
 
 // Wrap in async function
 (async () => {
-  console.log('hi');
+  await setup();
+  await spiderDevGoogle();
+  await genDevGoogleDT();
+  await getDiscoveryDocs();
+  await createAdvancedServiceDTs();
 })();
-
-// // Make directory
-// // ./DefinitelyTyped/types/google-apps-script/
-// mkdirp('DefinitelyTyped/types/google-apps-script/', () => {
-//   console.log('hi');
-// });
-// console.log('done');
