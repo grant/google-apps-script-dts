@@ -5,7 +5,8 @@
   "main": "./src/index.js",
   "scripts": {
     "build": "tsc --project tsconfig.json",
-    "test": "npm run build && node ."
+    "gen": "npm run build && node .",
+    "clean": "rm -rf src/*.js; rm -rf DefinitelyTyped"
   },
   "repository": {
     "type": "git",
@@ -18,6 +19,7 @@
   },
   "homepage": "https://github.com/grant/google-apps-script-dts#readme",
   "dependencies": {
-    "@types/node": "^10.12.12"
+    "@types/node": "^10.12.12",
+    "mkdirp": "^0.5.1"
   }
 }

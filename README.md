@@ -3,8 +3,8 @@
 Generates TypeScript definitions for [`@types/google-apps-script`](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/google-apps-script).
 
 ```sh
-npm run build;
-npm run generate;
+npm run gen; # Generate types
+npm run clean; # Clean directory
 ```
 
 ## Create a PR to DefinitelyTyped
@@ -23,7 +23,7 @@ rm -rf DefinitelyTyped/types/google-apps-script/
 # Generate types
 cd google-apps-script-dts;
 npm run build;
-npm run generate;
+npm run gen;
 cd ..;
 cp google-apps-script-dts/types/google-apps-script/ DefinitelyTyped/types/google-apps-script/
 cd DefinitelyTyped;
