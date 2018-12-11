@@ -1,0 +1,23 @@
+{
+  "name": "google-apps-script-dts",
+  "version": "1.0.0",
+  "description": "Generates @types/google-apps-script",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.json",
+    "test": "npm run build && node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grant/google-apps-script-dts.git"
+  },
+  "author": "Grant Timmerman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/grant/google-apps-script-dts/issues"
+  },
+  "homepage": "https://github.com/grant/google-apps-script-dts#readme",
+  "dependencies": {
+    "@types/node": "^10.12.12"
+  }
+}
