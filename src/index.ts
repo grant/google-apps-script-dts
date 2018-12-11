@@ -1,3 +1,5 @@
+const chalk = require('chalk');
+
 import createAdvancedServiceDTs from './createAdvancedServiceDTs';
 import genDevGoogleDT from './genDevGoogleDT';
 import getDiscoveryDocs from './getDiscoveryDocs';
@@ -15,8 +17,13 @@ import spiderDevGoogle from './spiderDevGoogle';
 // Wrap in async function
 (async () => {
   await setup();
+  console.log(chalk.green('# DONE – setup'));
   await spiderDevGoogle();
+  console.log(chalk.green('# DONE – Spider developers.google.com/apps-script/reference'));
   await genDevGoogleDT();
+  console.log(chalk.green('# DONE – Generate DT for *non-advanced* services'));
   await getDiscoveryDocs();
+  console.log(chalk.green('# DONE – Crawl Google Discovery Doc'));
   await createAdvancedServiceDTs();
+  console.log(chalk.green('# DONE – Generate DT for *advanced* services'));
 })();

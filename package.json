@@ -20,6 +20,7 @@
   "homepage": "https://github.com/grant/google-apps-script-dts#readme",
   "dependencies": {
     "@types/node": "^10.12.12",
+    "chalk": "^2.4.1",
     "mkdirp": "^0.5.1"
   }
 }
