@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc --project tsconfig.json",
     "gen": "npm run build && node .",
+    "test": "npm run build && node ./src/test.js",
     "clean": "rm -rf src/*.js; rm -rf DefinitelyTyped"
   },
   "repository": {
@@ -21,6 +22,13 @@
   "dependencies": {
     "@types/node": "^10.12.12",
     "chalk": "^2.4.1",
-    "mkdirp": "^0.5.1"
+    "cheerio": "^1.0.0-rc.2",
+    "co": "^4.6.0",
+    "mkdirp": "^0.5.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.10"
   }
 }

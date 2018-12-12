@@ -5,6 +5,7 @@ import genDevGoogleDT from './genDevGoogleDT';
 import getDiscoveryDocs from './getDiscoveryDocs';
 import setup from './setup';
 import spiderDevGoogle from './spiderDevGoogle';
+import test from './test';
 
 // Plan
 // 1. Make dir
@@ -21,9 +22,12 @@ import spiderDevGoogle from './spiderDevGoogle';
   await spiderDevGoogle();
   console.log(chalk.green('# DONE – Spider developers.google.com/apps-script/reference'));
   await genDevGoogleDT();
-  console.log(chalk.green('# DONE – Generate DT for *non-advanced* services'));
-  await getDiscoveryDocs();
-  console.log(chalk.green('# DONE – Crawl Google Discovery Doc'));
-  await createAdvancedServiceDTs();
-  console.log(chalk.green('# DONE – Generate DT for *advanced* services'));
+  // console.log(chalk.green('# DONE – Generate DT for *non-advanced* services'));
+  // await getDiscoveryDocs();
+  // console.log(chalk.green('# DONE – Crawl Google Discovery Doc'));
+  // await createAdvancedServiceDTs();
+  // console.log(chalk.green('# DONE – Generate DT for *advanced* services'));
+
+  // temp needed for compile to work
+  test();
 })();
