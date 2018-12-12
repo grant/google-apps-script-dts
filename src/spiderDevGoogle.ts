@@ -26,7 +26,7 @@ export async function visit(url: string) {
   let result = await rp({ url });
   
   // Message to the user
-  const queueRatio = `[${Scraper.queue.length}/${Scraper.queueTotal}]`;
+  const queueRatio = `[${Scraper.queue.length + 1}/${Scraper.queueTotal}]`;
   const bytes = result.length;
   console.log(`${queueRatio} VISIT(${category}) (${bytes} bytes): ${url}`);
   return result;
@@ -40,14 +40,16 @@ export async function visit(url: string) {
  */
 export async function scrape(html: string, url: string) {
   const category = categoryFromUrl(url);
-  var $ = load(html);
-  // var $: any;
-  // try {
-  //   $ = load(html);
-  // } catch(e) {
-  //   console.error(`Error loading in cheerio: ${url}`);
-  //   return;
-  // }
+  var $: CheerioStatic;
+  try { // There may be issues parsing cheerio
+    $ = load(html);
+  } catch(e) {
+    console.error(`Error loading in cheerio: ${url}`);
+    console.error(e);
+    console.error('HTML:');
+    console.error(html);
+    return;
+  }
   let headingText = $('h1').text();
   let m = headingText.match(/(Class|Enum|Interface) ([a-zA-Z0-9_.]+)/);
   if (!m) {
