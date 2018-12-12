@@ -1,6 +1,8 @@
+import { categoryFromUrl, printHeader } from './utils';
+
 import { Scraper } from './scraper';
-import { categoryFromUrl } from './utils';
 import { load } from 'cheerio';
+
 const co = require('co');
 const rp = require('request-promise');
 const chalk = require('chalk');
@@ -14,22 +16,42 @@ const MIN_WAIT = 1_000;
  * @param {string} url The URL of the Apps Script reference doc.
  */
 export async function visit(url: string) {
-  console.log(`VISIT: ${url}`);
-  var category = categoryFromUrl(url);
+  const category = categoryFromUrl(url);
   if (!category) return;
   if (!Scraper.categories[category]) {
     Scraper.categories[category] = {
       decls: {}
     };
   }
-  var result = await rp({
-    url,
-  });
-  var $ = load(result);
-  var headingText = $('h1').text();
-  var m = headingText.match(/(Class|Enum|Interface) ([a-zA-Z0-9_.]+)/);
+  let result = await rp({ url });
+  
+  // Message to the user
+  const queueRatio = `[${Scraper.queue.length}/${Scraper.queueTotal}]`;
+  const bytes = result.length;
+  console.log(`${queueRatio} VISIT(${category}) (${bytes} bytes): ${url}`);
+  return result;
+}
+
+/**
+ * Scrapes the HTML from the page.
+ * @param html The Apps Script reference doc html.
+ * @param url The Apps Script reference doc page.
+ * @return {Promise<object>} A promise with an ast of the page.
+ */
+export async function scrape(html: string, url: string) {
+  const category = categoryFromUrl(url);
+  var $ = load(html);
+  // var $: any;
+  // try {
+  //   $ = load(html);
+  // } catch(e) {
+  //   console.error(`Error loading in cheerio: ${url}`);
+  //   return;
+  // }
+  let headingText = $('h1').text();
+  let m = headingText.match(/(Class|Enum|Interface) ([a-zA-Z0-9_.]+)/);
   if (!m) {
-    var m = headingText.match(/^\s*(.+) Service/);
+    let m = headingText.match(/^\s*(.+) Service/);
     if (m) {
       Scraper.categories[category].name = m[1];
     } else {
@@ -67,7 +89,7 @@ export async function visit(url: string) {
   };
 
   function resolveHref(link: any) {
-    var href = link.attr('href');
+    let href = link.attr('href');
     if (href) {
       return URL.resolve(url, href);
     }
@@ -75,13 +97,13 @@ export async function visit(url: string) {
 
   /// props
   $('table.members.property tr:not(:first-child)').each((i, el) => {
-    var cells = $(el).find('td');
+    let cells = $(el).find('td');
     if (cells.length !== 3) return;
-    var name = cells.eq(0),
+    let name = cells.eq(0),
       type = cells.eq(1),
       doc = cells.eq(2);
 
-    var typeHref = resolveHref(type.find('a'));
+    let typeHref = resolveHref(type.find('a'));
     if (typeHref) Scraper.enqueue(typeHref);
 
     decl.properties.push({
@@ -93,17 +115,17 @@ export async function visit(url: string) {
 
   /// methods
   $('table.members.function tr:not(:first-child)').each((i, el) => {
-    var cells = $(el).find('td');
+    let cells = $(el).find('td');
     if (cells.length !== 3) return;
 
-    var name = cells.eq(0),
+    let name = cells.eq(0),
       type = cells.eq(1),
       doc = cells.eq(2);
 
-    var typeHref = resolveHref(type.find('a'));
+    let typeHref = resolveHref(type.find('a'));
     if (typeHref) Scraper.enqueue(typeHref);
 
-    var method: {
+    let method: {
       name: any,
       returnType: any,
       doc: any,
@@ -115,18 +137,18 @@ export async function visit(url: string) {
       params: []
     };
 
-    var detailId = name.find('a').attr('href').substring(1);
+    let detailId = name.find('a').attr('href').substring(1);
     // $('#' + detailId) fails
     $('*[id]').filter(function () {
       return $(el).attr('id') === detailId;
     })
       .find('table.function.param tr:not(:first-child)').each(function () {
-        var cells = $(el).find('td');
+        let cells = $(el).find('td');
         if (cells.length !== 3) return;
-        var name = cells.eq(0),
+        let name = cells.eq(0),
           type = cells.eq(1),
           doc = cells.eq(2);
-        var typeHref = resolveHref(type.find('a'));
+        let typeHref = resolveHref(type.find('a'));
         if (typeHref) Scraper.enqueue(typeHref);
         method.params.push({
           name: name.text(),
@@ -137,8 +159,6 @@ export async function visit(url: string) {
     decl.methods.push(method);
   });
   Scraper.categories[category].decls[decl.name] = decl;
-  console.log(Scraper.categories);
-  return;
 }
 
 // Main method
@@ -155,7 +175,7 @@ export default async function spiderDevGoogle() {
       inServices = false;
       return;
     }
-    var url = $(el).find('a[href]').attr('href');
+    let url = $(el).find('a[href]').attr('href');
     if (!url) return;
     url = URL.resolve(startURL, url);
     if (inServices) {
@@ -166,11 +186,11 @@ export default async function spiderDevGoogle() {
       inServices = true;
     }
   });
-  console.log('## DONE SPIDER ##');
-  console.log('## START SCRAPE ##');
+  printHeader('DONE SPIDER');
+  printHeader('START SCRAPE');
   while (Scraper.queue.length > 0) {
-    var url = Scraper.queue.splice(0, CONCURRENCY);
-    console.log(`${Scraper.queue.length} URLs left.`);
-    await visit(url[0]);
+    let url = Scraper.queue.splice(0, CONCURRENCY)[0];
+    let html = await visit(url);
+    let ast = await scrape(html, url);
   }
 }
