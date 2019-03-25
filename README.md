@@ -7,6 +7,13 @@ npm run gen; # Generate types
 npm run clean; # Clean directory
 ```
 
+## Generate Advanced Types
+
+Follow the instructions on this page:
+https://github.com/mtgto/dts-google-apps-script-advanced
+
+Use the data in the `data` folder. This data was gathered from observing the network data from the Apps Script IDE when enabling an Advanced Service.
+
 ## Create a PR to DefinitelyTyped
 
 1. Fork https://github.com/DefinitelyTyped/DefinitelyTyped
