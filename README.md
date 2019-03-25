@@ -2,17 +2,18 @@
 
 Generates TypeScript definitions for [`@types/google-apps-script`](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/google-apps-script).
 
-```sh
-npm run gen; # Generate types
-npm run clean; # Clean directory
-```
+## Generate Basic Types
+
+See https://github.com/motemen/dts-google-apps-script for generating basic types.
 
 ## Generate Advanced Types
 
 Follow the instructions on this page:
 https://github.com/mtgto/dts-google-apps-script-advanced
 
-Use the data in the `data` folder. This data was gathered from observing the network data from the Apps Script IDE when enabling an Advanced Service.
+- Use the data in the `data_in` folder.
+  - This data was gathered from observing the network data from the Apps Script IDE when enabling an Advanced Service.
+  - You can add updated JSON there.
 
 ## Create a PR to DefinitelyTyped
 
