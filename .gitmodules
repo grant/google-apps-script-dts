@@ -1,0 +1,3 @@
+[submodule "dts-google-apps-script-advanced"]
+	path = dts-google-apps-script-advanced
+	url = git@github.com:mtgto/dts-google-apps-script-advanced.git

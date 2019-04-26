@@ -2,9 +2,71 @@
 
 Generates TypeScript definitions for [`@types/google-apps-script`](https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/google-apps-script).
 
+## Generate Basic Types
+
+See https://github.com/motemen/dts-google-apps-script for generating basic types.
+
+## Generate Advanced Types
+
+Follow the instructions on this page:
+
+1. Download Advanced Types data
+
+- Use the data in the `data_in` folder.
+  - This data was gathered from observing the network data from the Apps Script IDE when enabling an Advanced Service.
+  - You can add updated JSON there.
+
+2. Process the data scraper
+
 ```sh
-npm run gen; # Generate types
-npm run clean; # Clean directory
+generate1.sh
+```
+
+3. Generate `d.ts` files
+
+```sh
+# Build the advanced types processor
+cd dts-google-apps-script-advanced/
+tsc index.ts
+cd ..
+
+# Run the generator
+mkdir -p DefinitelyTyped/types/google-apps-script/apis
+```
+
+```sh
+generate2.sh
+
+# adsence_v1_4
+# analytics_v3
+# analyticsreporting_v4
+# appsactivity_v1
+# bigquery_v2
+# calendar_v3
+# classroom_v1
+# content_v2
+# dfareporting_v3_3
+# directory_v1
+# docs_v1
+# drive_v2
+# driveactivity_v2
+# fusiontables_v2
+# gmail_v1
+# groupsmigration_v1
+# groupssettings_v1
+# licensing_v1
+# mirror_v1
+# peopleapi_v1
+# reports_v1
+# reseller_v1
+# sheets_v4
+# slides_v1
+# tagmanager_v2
+# tasks_v1
+# urlshortener_v1
+# youtube_v3
+# youtubeanalytics_v2
+# youtubepartner_v1
 ```
 
 ## Create a PR to DefinitelyTyped
